@@ -163,21 +163,21 @@ The project includes comprehensive unit tests for all Flask routes and functiona
 ```bash
 source .venv/bin/activate
 cd pomodoro_app
-pytest test_pomodoro.py -v
+uv run pytest test_pomodoro.py -v
 ```
 
 **Run tests with coverage report (terminal):**
 ```bash
 source .venv/bin/activate
 cd pomodoro_app
-pytest test_pomodoro.py --cov=app --cov-report=term-missing
+uv run pytest test_pomodoro.py --cov=app --cov-report=term-missing
 ```
 
 **Run tests with HTML coverage report:**
 ```bash
 source .venv/bin/activate
 cd pomodoro_app
-pytest test_pomodoro.py --cov=app --cov-report=html
+uv run pytest test_pomodoro.py --cov=app --cov-report=html
 ```
 
 This generates an HTML coverage report in `htmlcov/index.html` that you can open in your browser to see detailed line-by-line coverage.
@@ -185,21 +185,21 @@ This generates an HTML coverage report in `htmlcov/index.html` that you can open
 **Run specific test classes:**
 ```bash
 # Test only the index route
-pytest test_pomodoro.py::TestIndexRoute -v
+uv run pytest test_pomodoro.py::TestIndexRoute -v
 
 # Test only logging functionality
-pytest test_pomodoro.py::TestLogSessionRoute -v
+uv run pytest test_pomodoro.py::TestLogSessionRoute -v
 
 # Test only history functionality
-pytest test_pomodoro.py::TestHistoryRoute -v
+uv run pytest test_pomodoro.py::TestHistoryRoute -v
 
 # Test error handling
-pytest test_pomodoro.py::TestErrorHandling -v
+uv run pytest test_pomodoro.py::TestErrorHandling -v
 ```
 
 **Run tests with extra verbose output:**
 ```bash
-pytest test_pomodoro.py -vv
+uv run pytest test_pomodoro.py -vv
 ```
 
 ### Test Results
