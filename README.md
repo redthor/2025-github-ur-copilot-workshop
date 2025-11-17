@@ -114,6 +114,9 @@ The project uses the following Python packages:
 - **Flask 3.1.2** - Web framework
 - **gunicorn 21.2.0** - Production WSGI server
 - **requests 2.32.5** - HTTP library for testing
+- **pytest 9.0.1** - Testing framework
+- **pytest-cov 7.0.0** - Code coverage plugin for pytest
+- **pytest-flask 1.3.0** - Flask-specific pytest utilities
 
 ## 🌟 Key Features
 
@@ -152,13 +155,76 @@ curl http://pomodoro-timer-ecomindo-1763110994.azurewebsites.net/history
 
 ## 🛠️ Development
 
-### Running Tests
+### Running Unit Tests
 
+The project includes comprehensive unit tests for all Flask routes and functionality. Tests are located in `pomodoro_app/test_pomodoro.py` with **19 test cases** achieving **93% code coverage**.
+
+**Run all tests:**
 ```bash
 source .venv/bin/activate
 cd pomodoro_app
-python -m pytest test_app.py
+pytest test_pomodoro.py -v
 ```
+
+**Run tests with coverage report (terminal):**
+```bash
+source .venv/bin/activate
+cd pomodoro_app
+pytest test_pomodoro.py --cov=app --cov-report=term-missing
+```
+
+**Run tests with HTML coverage report:**
+```bash
+source .venv/bin/activate
+cd pomodoro_app
+pytest test_pomodoro.py --cov=app --cov-report=html
+```
+
+This generates an HTML coverage report in `htmlcov/index.html` that you can open in your browser to see detailed line-by-line coverage.
+
+**Run specific test classes:**
+```bash
+# Test only the index route
+pytest test_pomodoro.py::TestIndexRoute -v
+
+# Test only logging functionality
+pytest test_pomodoro.py::TestLogSessionRoute -v
+
+# Test only history functionality
+pytest test_pomodoro.py::TestHistoryRoute -v
+
+# Test error handling
+pytest test_pomodoro.py::TestErrorHandling -v
+```
+
+**Run tests with extra verbose output:**
+```bash
+pytest test_pomodoro.py -vv
+```
+
+### Test Results
+
+All 19 tests pass with 93% code coverage:
+```
+================================================= 19 passed in 0.26s ==================================================
+Name     Stmts   Miss  Cover   Missing
+--------------------------------------
+app.py      41      3    93%   66-68
+--------------------------------------
+```
+
+### What's Being Tested
+
+The unit tests cover:
+
+- ✅ **Index Route** - Homepage rendering and status codes
+- ✅ **Session Logging** - All session types (work, short break, long break)
+- ✅ **Multiple Session Types** - Completed vs. skipped sessions
+- ✅ **Default Values** - Handling of missing optional parameters
+- ✅ **History Retrieval** - Empty logs, populated logs, malformed entries
+- ✅ **Log File Format** - Entry structure and append behavior
+- ✅ **Error Handling** - Invalid JSON, file permissions, exceptions
+- ✅ **Data Integrity** - Correct parsing and structure of log entries
 
 ### Running in Debug Mode
 
