@@ -1,11 +1,15 @@
 from flask import Flask, render_template, request, jsonify
 from datetime import datetime
+from pathlib import Path
 import os
+
+from analytics_service import generate_stats
 
 app = Flask(__name__)
 
 # Ensure log file exists
 LOG_FILE = 'pomodoro_log.txt'
+LOG_PATH = Path(LOG_FILE)
 
 @app.route('/')
 def index():
@@ -60,6 +64,19 @@ def get_history():
     
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/stats')
+def get_stats():
+    """Get aggregated analytics and statistics"""
+    try:
+        stats = generate_stats(LOG_PATH)
+        return jsonify(stats)
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'error_code': 'STATS_COMPUTE_FAILED',
+            'message': str(e)
+        }), 500
 
 if __name__ == '__main__':
     # Use environment variables for production deployment
