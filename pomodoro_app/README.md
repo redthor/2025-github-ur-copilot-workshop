@@ -83,6 +83,7 @@ pomodoro_app/
 - `GET /` - Serves the main timer page
 - `POST /log` - Logs session events (completed/skipped)
 - `GET /history` - Returns session history (optional)
+- `GET /stats` - Returns aggregated productivity analytics
 
 ## Session Logging
 
@@ -96,6 +97,76 @@ Example:
 2024-01-15 14:30:00 | work | completed | session_1
 2024-01-15 14:55:00 | short_break | completed | session_1
 ```
+
+## New Analytics Endpoint
+
+The `/stats` endpoint provides aggregated productivity metrics based on your session log history.
+
+### Sample Response
+
+```json
+{
+  "generated_at": "2025-11-18T22:41:20.058828",
+  "log_entries": 6,
+  "malformed_entries": 0,
+  "date_scope": {
+    "today": "2025-11-18",
+    "week_start": "2025-11-17",
+    "week_end": "2025-11-23"
+  },
+  "sessions": {
+    "work": {
+      "completed": 2,
+      "skipped": 2,
+      "total_duration_seconds": 0
+    },
+    "short_break": {
+      "completed": 2,
+      "skipped": 0,
+      "total_duration_seconds": 0
+    },
+    "long_break": {
+      "completed": 0,
+      "skipped": 0,
+      "total_duration_seconds": 0
+    }
+  },
+  "focus": {
+    "today_work_sessions_completed": 0,
+    "today_focus_minutes": 0.0,
+    "week_focus_minutes": 0.0,
+    "completion_ratio": 0.67
+  },
+  "streaks": {
+    "consecutive_focus_days": 0
+  },
+  "averages": {
+    "avg_work_session_duration_seconds": 0.0
+  },
+  "cycles": {
+    "estimated_full_cycles_completed": 0
+  }
+}
+```
+
+### Metrics Explained
+
+- **log_entries**: Number of successfully parsed log lines
+- **malformed_entries**: Count of unparseable log lines (gracefully skipped)
+- **date_scope**: Current date and week boundaries (Monday-Sunday)
+- **sessions**: Per-type breakdown of completed/skipped sessions and total duration
+- **focus**: 
+  - `today_work_sessions_completed`: Work sessions completed today
+  - `today_focus_minutes`: Total focused work time today
+  - `week_focus_minutes`: Total focused work time this week
+  - `completion_ratio`: Ratio of completed to total sessions (all types)
+- **streaks**:
+  - `consecutive_focus_days`: Days in a row (ending today) with ≥1 completed work session
+- **averages**:
+  - `avg_work_session_duration_seconds`: Average duration of completed work sessions
+- **cycles**:
+  - `estimated_full_cycles_completed`: Number of full Pomodoro cycles (4 work sessions = 1 cycle)
+
 
 ## Customization
 
